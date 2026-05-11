@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Wardrobe</title>
+<style>
+  :root {
+    --bg: #f5f1eb;
+    --bg-card: #ffffff;
+    --bg-soft: #ede6dc;
+    --ink: #2b2622;
+    --ink-soft: #6b6259;
+    --line: #d8cfc1;
+    --accent: #8a6d4a;
+    --accent-soft: #c2a987;
+    --pill: #efe7da;
+    --danger: #b5644b;
+    --shadow: 0 1px 2px rgba(40,30,20,.05), 0 6px 20px rgba(40,30,20,.06);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    padding: 28px 36px 12px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .title-row {
+    display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap;
+  }
+  h1 {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-weight: 500; font-size: 30px; letter-spacing: 0.5px;
+    margin: 0;
+  }
+  .subtitle { color: var(--ink-soft); font-size: 14px; }
+  .stats { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; font-size: 13px; color: var(--ink-soft);}
+  .stat { background: var(--bg-soft); padding: 4px 10px; border-radius: 999px; }
+  .stat strong { color: var(--ink); font-weight: 600; }
+
+  .toolbar {
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    margin-top: 16px; padding-bottom: 10px;
+  }
+  input[type=text], select {
+    border: 1px solid var(--line); background: var(--bg-card);
+    padding: 8px 12px; border-radius: 8px; font-size: 14px; color: var(--ink);
+    font-family: inherit;
+  }
+  input[type=text] { min-width: 220px; }
+  input[type=text]::placeholder { color: var(--ink-soft); }
+  button {
+    border: 1px solid var(--line); background: var(--bg-card);
+    padding: 8px 14px; border-radius: 8px; font-size: 13px; cursor: pointer;
+    color: var(--ink); font-family: inherit;
+    transition: background .15s ease;
+  }
+  button:hover { background: var(--bg-soft); }
+  button.primary { background: var(--accent); color: white; border-color: var(--accent); }
+  button.primary:hover { background: #74593a; }
+  button.ghost { background: transparent; }
+
+  .filter-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .chip {
+    background: var(--pill); border: 1px solid transparent;
+    padding: 5px 12px; border-radius: 999px; font-size: 12px;
+    cursor: pointer; user-select: none;
+    transition: all .15s ease;
+  }
+  .chip:hover { background: var(--bg-soft); }
+  .chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .chip-group {
+    display: flex; gap: 4px; flex-wrap: wrap; align-items: center;
+    padding: 6px 10px; background: rgba(0,0,0,.02); border-radius: 10px;
+  }
+  .chip-group-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-soft); margin-right: 4px;}
+
+  main { padding: 24px 36px 80px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--bg-card); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow); cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(40,30,20,.12); }
+  .card .photo {
+    aspect-ratio: 3/4;
+    background: var(--bg-soft);
+    background-size: cover; background-position: center;
+  }
+  .card .meta { padding: 10px 12px 12px; }
+  .card .type {
+    font-size: 13px; font-weight: 600; text-transform: capitalize;
+    color: var(--ink);
+  }
+  .card .desc {
+    font-size: 11px; color: var(--ink-soft); margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .colors-row { display: flex; gap: 4px; margin-top: 6px; }
+  .color-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 1px solid rgba(0,0,0,.1);
+  }
+  .badge {
+    position: absolute; top: 8px; left: 8px;
+    background: rgba(255,255,255,.92); border-radius: 6px;
+    padding: 3px 8px; font-size: 10px; font-weight: 600;
+    color: var(--ink); letter-spacing: 0.5px;
+  }
+  .badge.back { background: var(--accent); color: white; }
+  .badge.flag { background: var(--danger); color: white; top: auto; bottom: 8px; }
+  .status-dot {
+    position: absolute; top: 8px; right: 8px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid white; box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+  }
+  .status-keep { background: #6b8a4f; }
+  .status-unsure { background: #d4a259; }
+  .status-donate { background: #b5644b; }
+  .status-favorite { background: transparent; border: none; box-shadow: none; }
+  .status-favorite::before { content: "★"; color: #d9b34a; font-size: 18px; line-height: 1; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+  .color-opt {
+    border: 1px solid var(--line); padding: 5px 12px 5px 8px; border-radius: 999px;
+    font-size: 12px; cursor: pointer; user-select: none; background: var(--bg-card);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .color-opt.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .color-opt .dot { width:10px; height:10px; border-radius:50%; border:1px solid rgba(0,0,0,.15); flex:0 0 10px; }
+  .opt.empty { color: var(--ink-soft); font-style: italic; }
+  .modal-side select { cursor: pointer; }
+  .linked-outfit {
+    background: var(--bg-soft); padding: 8px 12px; border-radius: 8px; font-size: 13px;
+    cursor: pointer; margin-bottom: 6px; display: inline-block; margin-right: 6px;
+  }
+  .linked-outfit:hover { background: var(--pill); }
+  .linked-outfit::before { content: "👗 "; }
+
+  /* Modal */
+  .modal-bg {
+    display: none; position: fixed; inset: 0;
+    background: rgba(20,15,10,.55);
+    z-index: 100; backdrop-filter: blur(2px);
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-bg.show { display: flex; }
+  .modal {
+    background: var(--bg-card); border-radius: 14px;
+    max-width: 1100px; width: 100%; max-height: 92vh;
+    overflow: hidden; display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    box-shadow: 0 30px 60px rgba(0,0,0,.3);
+  }
+  .modal-photo {
+    background: #2b2622; display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .modal-photo img { max-width: 100%; max-height: 92vh; object-fit: contain; }
+  .modal-side { padding: 24px; overflow-y: auto; max-height: 92vh; }
+  .modal-side h2 { font-family: Georgia, serif; font-weight: 500; font-size: 22px; margin: 0 0 4px; }
+  .modal-side .id { font-size: 11px; color: var(--ink-soft); letter-spacing: 1px; text-transform: uppercase; }
+  .modal-section { margin-top: 18px; }
+  .modal-section label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-soft); margin-bottom: 6px; }
+  .modal-section input, .modal-section select, .modal-section textarea {
+    width: 100%; border: 1px solid var(--line); padding: 8px 10px;
+    border-radius: 8px; font-size: 14px; font-family: inherit; color: var(--ink);
+    background: var(--bg-card);
+  }
+  .modal-section textarea { min-height: 70px; resize: vertical; }
+  .auto-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .auto-tag {
+    background: var(--bg-soft); padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .auto-tag strong { color: var(--ink); font-weight: 500; }
+  .options-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .opt {
+    border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px;
+    font-size: 12px; cursor: pointer; user-select: none; background: var(--bg-card);
+  }
+  .opt.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .modal-actions { margin-top: 20px; display: flex; gap: 8px; }
+  .pair-link {
+    margin-top: 8px; padding: 8px 10px; background: var(--bg-soft);
+    border-radius: 8px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+  }
+  .pair-link:hover { background: var(--pill); }
+  .pair-link img { width: 36px; height: 48px; object-fit: cover; border-radius: 4px; }
+
+  /* Outfit panel */
+  .outfit-panel {
+    position: fixed; right: -420px; top: 0; bottom: 0; width: 400px;
+    background: var(--bg-card); box-shadow: -10px 0 30px rgba(0,0,0,.1);
+    transition: right .25s ease; z-index: 50;
+    display: flex; flex-direction: column;
+  }
+  .outfit-panel.open { right: 0; }
+  .outfit-panel header { position: static; padding: 22px; }
+  .outfit-panel h2 { font-family: Georgia, serif; font-weight: 500; font-size: 20px; margin: 0;}
+  .outfit-list { padding: 12px 22px; overflow-y: auto; flex: 1; }
+  .outfit-current {
+    background: var(--bg-soft); padding: 12px; border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  .outfit-thumbs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; min-height: 60px; }
+  .outfit-thumbs img { width: 50px; height: 65px; object-fit: cover; border-radius: 4px; cursor: pointer; }
+  .outfit-saved {
+    border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-bottom: 12px;
+  }
+  .outfit-saved h4 { margin: 0 0 6px; font-size: 14px; font-weight: 500; }
+  .outfit-saved-thumbs { display: flex; gap: 4px; }
+  .outfit-saved-thumbs img { width: 40px; height: 52px; object-fit: cover; border-radius: 3px; }
+  .outfit-saved-actions { display: flex; gap: 6px; margin-top: 8px; }
+  .outfit-saved-actions button { font-size: 11px; padding: 4px 10px; }
+
+  /* Outfit selector mode */
+  .grid.outfit-mode .card { position: relative; }
+  .grid.outfit-mode .card.selected::after {
+    content: ""; position: absolute; inset: 0; border: 3px solid var(--accent);
+    border-radius: 12px; pointer-events: none;
+  }
+  .grid.outfit-mode .card.selected::before {
+    content: "✓"; position: absolute; top: 8px; right: 8px;
+    background: var(--accent); color: white; width: 26px; height: 26px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: bold; z-index: 2;
+  }
+  .grid.outfit-mode .status-dot { display: none; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--bg); padding: 10px 18px;
+    border-radius: 10px; font-size: 14px; opacity: 0;
+    transition: opacity .2s ease; pointer-events: none; z-index: 200;
+  }
+  .toast.show { opacity: 1; }
+
+  /* Stylist dialog */
+  .stylist-bg {
+    display: none; position: fixed; inset: 0;
+    background: rgba(30,22,16,.45); z-index: 110;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .stylist-bg.show { display: flex; }
+  .stylist-dialog {
+    background: var(--bg-card); border-radius: 14px; padding: 24px;
+    box-shadow: 0 20px 50px rgba(40,30,20,.25);
+    max-width: 540px; width: 100%; max-height: 92vh; overflow-y: auto;
+  }
+  .stylist-dialog h2 {
+    font-family: Georgia, serif; font-weight: 500; font-size: 22px; margin: 0 0 4px;
+  }
+  .stylist-dialog .sub {
+    color: var(--ink-soft); font-size: 13px; margin-bottom: 18px;
+  }
+  .stylist-section-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--ink-soft); margin: 14px 0 6px;
+  }
+  .stylist-radios { display: flex; flex-direction: column; gap: 6px; }
+  .stylist-radio {
+    display: flex; gap: 8px; align-items: center;
+    padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px;
+    cursor: pointer; font-size: 13px;
+    transition: background .12s ease, border-color .12s ease;
+  }
+  .stylist-radio:hover { background: var(--bg-soft); }
+  .stylist-radio input { margin: 0; }
+  .stylist-radio.disabled { opacity: .45; cursor: not-allowed; }
+  .stylist-radio.checked { border-color: var(--accent); background: var(--pill); }
+  .stylist-radio .count {
+    margin-left: auto; font-size: 12px; color: var(--ink-soft);
+  }
+  .stylist-prompts {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+  }
+  .stylist-prompt-btn {
+    text-align: left; font-size: 12px; padding: 8px 10px;
+    border: 1px solid var(--line); border-radius: 8px;
+    background: var(--bg-card); cursor: pointer; color: var(--ink);
+    font-family: inherit; line-height: 1.3;
+  }
+  .stylist-prompt-btn:hover { background: var(--bg-soft); border-color: var(--accent-soft); }
+  .stylist-prompt-btn.checked { background: var(--pill); border-color: var(--accent); }
+  .stylist-custom {
+    width: 100%; border: 1px solid var(--line); background: var(--bg-card);
+    padding: 8px 10px; border-radius: 8px; font-size: 13px; font-family: inherit;
+    margin-top: 6px; min-height: 60px; resize: vertical; color: var(--ink);
+  }
+  .stylist-actions {
+    display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;
+  }
+  .stylist-preview-toggle {
+    margin-top: 14px; font-size: 12px; color: var(--ink-soft);
+    cursor: pointer; text-decoration: underline; user-select: none;
+  }
+  .stylist-preview {
+    display: none; margin-top: 8px; padding: 10px; background: var(--bg-soft);
+    border: 1px solid var(--line); border-radius: 8px; font-size: 11px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    white-space: pre-wrap; max-height: 220px; overflow-y: auto;
+    color: var(--ink-soft);
+  }
+  .stylist-preview.show { display: block; }
+
+  @media (max-width: 760px) {
+    .modal { grid-template-columns: 1fr; }
+    .modal-photo img { max-height: 50vh; }
+    header { padding: 18px 16px 8px; }
+    main { padding: 14px 16px 60px; }
+    .outfit-panel { width: 100%; right: -100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title-row">
+    <h1>My Wardrobe</h1>
+    <span class="subtitle">A personal catalog of <span id="count-total">0</span> items</span>
+  </div>
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <input type="text" id="search" placeholder="Search by type, color, notes…">
+    <select id="sort">
+      <option value="id">Sort: by photo order</option>
+      <option value="type">Sort: by type</option>
+      <option value="color">Sort: by color</option>
+    </select>
+    <button id="hide-back" class="ghost">Hide back-of-item shots</button>
+    <button id="show-hidden" class="ghost">Show hidden items</button>
+    <span style="flex:1"></span>
+    <button id="outfit-toggle" class="primary">👗 Outfit planner</button>
+    <button id="stylist-open" title="Copy a chat-ready prompt to talk outfits with your AI stylist">💬 Ask the Stylist</button>
+    <button id="export">Export edits</button>
+    <button id="import-btn">Import edits</button>
+    <input type="file" id="import-file" accept=".json" style="display:none">
+    <button id="connect-file" class="ghost" title="Sync edits to a real file in your Wardrobe folder">🔗 Sync to file</button>
+  </div>
+
+  <div id="sync-banner" style="display:none; margin-top:8px; padding:8px 12px; background:#fff3df; border:1px solid #e6c98a; border-radius:8px; font-size:13px;">
+    <span id="sync-banner-text"></span>
+    <button id="sync-banner-action" class="ghost" style="margin-left:8px; padding:4px 10px; font-size:12px;">Reconnect</button>
+  </div>
+
+  <div class="filter-chips" id="filters"></div>
+</header>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <p id="empty-state" style="display:none; text-align:center; color: var(--ink-soft); padding: 60px 20px;">No items match your filters.</p>
+</main>
+
+<!-- Item Modal -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal" id="modal">
+    <div class="modal-photo"><img id="modal-img" src="" alt=""></div>
+    <div class="modal-side" id="modal-side"></div>
+  </div>
+</div>
+
+<!-- Outfit Panel -->
+<div class="outfit-panel" id="outfit-panel">
+  <header>
+    <div style="display:flex; justify-content: space-between; align-items: center;">
+      <h2>Outfit Planner</h2>
+      <button class="ghost" id="outfit-close">✕</button>
+    </div>
+    <p class="subtitle" style="margin-top:4px;">Click items in the grid to add them to the current outfit.</p>
+  </header>
+  <div class="outfit-list">
+    <div class="outfit-current">
+      <input type="text" id="outfit-name" placeholder="Outfit name (e.g. Friday brunch)" style="width:100%; border:1px solid var(--line); padding:8px; border-radius:6px; font-family:inherit;">
+      <div class="outfit-thumbs" id="outfit-current-thumbs"></div>
+      <div style="display:flex; gap:6px; margin-top:10px;">
+        <button class="primary" id="outfit-save">Save outfit</button>
+        <button class="ghost" id="outfit-clear">Clear</button>
+      </div>
+    </div>
+    <h3 style="font-family:Georgia,serif; font-weight:500; font-size:16px; margin:14px 0 8px;">Saved outfits</h3>
+    <div id="outfits-saved-list"></div>
+  </div>
+</div>
+
+<!-- Stylist Dialog -->
+<div class="stylist-bg" id="stylist-bg">
+  <div class="stylist-dialog" id="stylist-dialog" role="dialog" aria-modal="true" aria-label="Ask the Stylist">
+    <h2>💬 Ask Claudia's Stylist</h2>
+    <p class="sub">Builds a chat-ready prompt: your stylist persona + a snapshot of the clothes you pick. Paste it into Claude, ChatGPT, or any other chat to start a styling session.</p>
+
+    <div class="stylist-section-label">What should she see?</div>
+    <div class="stylist-radios" id="stylist-context-radios"></div>
+
+    <div class="stylist-section-label">Quick start (optional — pick one or write your own)</div>
+    <div class="stylist-prompts" id="stylist-prompts">
+      <button class="stylist-prompt-btn" data-prompt="What should I wear today? Ask me a couple of quick questions first (occasion, vibe, weather) and then suggest one full outfit from my wardrobe.">What should I wear today?</button>
+      <button class="stylist-prompt-btn" data-prompt="Help me plan a packing list. I'll tell you the trip details — number of days, destination, weather, what I'll be doing — and you build a capsule from my actual wardrobe.">Help me pack for a trip</button>
+      <button class="stylist-prompt-btn" data-prompt="Switch into editorial-eye mode. Walk me through my wardrobe and call out duplicates, dead inventory, and items that aren't earning their hanger space. Group similar things and tell me what to declutter.">Help me declutter</button>
+      <button class="stylist-prompt-btn" data-prompt="I'm in a style rut. Pull a deep cut from my wardrobe — something I probably haven't worn in a while — and build one fresh outfit around it. Surprise me.">Surprise me — break my rut</button>
+      <button class="stylist-prompt-btn" data-prompt="I'm thinking of wearing the item(s) I've put in front of you. What would you pair them with from the rest of my wardrobe? Give me two options — one softer, one sharper.">Style what I'm holding</button>
+      <button class="stylist-prompt-btn" data-prompt="Build me a 7-piece capsule wardrobe from what I already own, around a clear color story. Tell me which items to include and walk through five outfits the capsule can produce.">Build me a capsule</button>
+    </div>
+    <textarea class="stylist-custom" id="stylist-custom" placeholder="…or type your own opening question (e.g. 'I have a birthday dinner Friday, smart-casual')"></textarea>
+
+    <div class="stylist-preview-toggle" id="stylist-preview-toggle">Show prompt preview</div>
+    <div class="stylist-preview" id="stylist-preview"></div>
+
+    <div class="stylist-actions">
+      <button class="ghost" id="stylist-cancel">Cancel</button>
+      <button class="primary" id="stylist-copy">✨ Copy to clipboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- Stylist persona (paste-ready Markdown, kept inline so the file stays portable) -->
+<script type="text/markdown" id="stylist-persona">
+You are **Claudia's Stylist** — a personal stylist whose only client is Claudia. You know her wardrobe inside out because she just handed you a snapshot of it (see the JSON below). Your job is to help her plan outfits, get more wear out of what she owns, and feel good about getting dressed.
+
+### Your voice — three modes, one stylist
+
+You flex between three tones depending on what Claudia needs. Read the room.
+
+1. **Warm best-friend** (default for low-stakes days, "what should I wear?", confidence dips). Curious, encouraging, asks about her mood and the occasion, suggests playful combos. "Okay tell me — are we feeling soft or sharp today? What's the day actually look like?"
+2. **Sharp editorial eye** (when she asks for honesty, is decluttering, or wants opinions). Confident, opinionated, references silhouette, proportion, color story, texture. Willing to say "the burgundy floral is doing more for you than the olive maxi — keep one, donate the other." Never cruel, always specific.
+3. **Practical wardrobe coach** (for travel packing, capsule building, "I keep wearing the same five things", outfit math). Focuses on versatility, re-wear, what's already in heavy rotation vs. dead inventory.
+
+If you can't tell which mode fits, ask one short question. Don't open with all three at once — pick the one that matches her message and lean in.
+
+### How to talk about her clothes
+
+- Refer to items by their **notes field**, not their IMG ID. "the burgundy floral high-neck" not "IMG_2027". The ID is for your tracking only.
+- When suggesting outfits, **name every piece**: top, bottom (or dress), layer, and one sentence on shoes/accessories even though those aren't in her catalog yet. ("Pair with simple gold hoops and bare ankles" works.)
+- Lean on what's actually there. Don't invent items. If you want to suggest something she doesn't own, say "you're missing a [thing] — want me to flag it as a gap?"
+- Watch the `pairOf` / `isBack` flags — front and back are the same item. Never suggest "the camel shirt-dress AND the QUEEN print top" — they're one.
+- Watch the `season` and `occasion` tags — a `going-out` sequin slip is wrong for a Monday standup; a `work` blazer is wrong for a beach picnic.
+- Color normalization cheat sheet: olive/sage → green family; tan/camel/taupe/khaki → beige; champagne → cream; wine → burgundy; coral → orange; light blue/denim blue → blue; dark blue → navy.
+
+### How to actually help
+
+**"What should I wear?"** — Don't dump five options. Ask two quick things if you don't already know them: *occasion* and *vibe* (or *weather*). Then propose ONE outfit she could actually leave the house in, with reasoning in one or two lines. Offer a "swap" option for dressier/softer.
+
+**Stuck or in a rut** — Pull a deep cut from her catalog — something she hasn't mentioned, or a piece in a color she rarely combines.
+
+**Decluttering** — Be honest, item by item. Ask about fit, frequency of wear, and emotional attachment before declaring. Group similar items and flag overlap. Help her see duplicates she's blind to.
+
+**Packing or capsule** — Start with the constraints (days, occasions, weather). Build outwards from a unifying color story. Pull specific items.
+
+**Trying something new** — Encourage a tiny stretch, not a costume.
+
+### Things to never do
+
+- Don't be vague ("it depends on the vibe!"). Always commit to a suggestion.
+- Don't push items into occasions they don't fit.
+- Don't reinvent her style without permission.
+- Don't apologize for opinions. Soften delivery, not substance.
+- Don't reference items not in the catalog as if they exist.
+- Don't suggest shopping unless she asks for a gap analysis.
+
+### First message
+
+Your opener should be short and warm — under three sentences — and end with one specific question to get the styling session started.
+</script>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ---------- DATA ----------
+const CATALOG = {"version":2,"lastUpdated":"2026-05-10","items":[{"id":"IMG_1964","type":"other","colors":[],"pattern":"","sleeves":"","length":"","notes":"Not a clothing item — looks like a screenshot/selfie. Review or remove from catalog.","autoFlagged":true},{"id":"IMG_1965","type":"dress","colors":["black","pink","red","green"],"pattern":"floral","sleeves":"short","length":"midi","neckline":"v-neck","season":"summer","notes":"Black background floral midi dress, short cap sleeves"},{"id":"IMG_1966","type":"dress","colors":["beige","champagne"],"pattern":"sequin","sleeves":"sleeveless","length":"mini","neckline":"v-neck","season":"year-round","occasion":["going-out"],"notes":"Sequined slip dress, spaghetti straps"},{"id":"IMG_1967","type":"shirt","colors":["white","black"],"pattern":"print","sleeves":"short","neckline":"collared","season":"summer","occasion":["casual"],"notes":"White button-up with line-drawing women print"},{"id":"IMG_1968","type":"dress","colors":["cream","pink","green"],"pattern":"floral","sleeves":"short","length":"midi","neckline":"collared","season":"summer","notes":"Cream floral midi shirt-dress, puff sleeves, button-down"},{"id":"IMG_1969","type":"trousers","colors":["grey"],"pattern":"textured","season":"year-round","notes":"Grey textured trousers — hung over hanger"},{"id":"IMG_1970","type":"jeans","colors":["black","dark grey"],"pattern":"solid","season":"year-round","occasion":["casual"],"notes":"Levi's, dark wash"},{"id":"IMG_1971","type":"jeans","colors":["dark blue"],"pattern":"solid","season":"year-round","occasion":["casual"],"notes":"Dark blue denim — has tag visible"},{"id":"IMG_1972","type":"jeans","colors":["blue"],"pattern":"solid","season":"year-round","occasion":["casual"],"notes":"Levi's, classic medium wash"},{"id":"IMG_1973","type":"trousers","colors":["black"],"pattern":"solid","season":"year-round","occasion":["work","going-out"],"notes":"Black dress trousers"},{"id":"IMG_1974","type":"trousers","colors":["beige","khaki"],"pattern":"solid","season":"year-round","occasion":["casual"],"notes":"Cargo pants with side pocket"},{"id":"IMG_1975","type":"skirt","colors":["dark blue"],"pattern":"solid","length":"mini","season":"year-round","occasion":["casual"],"notes":"Montego dark denim mini skirt"},{"id":"IMG_1976","type":"skirt","colors":["brown","grey"],"pattern":"plaid","length":"midi","season":"autumn","occasion":["work","casual"],"notes":"Plaid A-line skirt"},{"id":"IMG_1977","type":"top","colors":["dark grey"],"pattern":"solid","sleeves":"short","season":"year-round","occasion":["casual"],"notes":"Plain dark grey/charcoal tee"},{"id":"IMG_1978","type":"trousers","colors":["navy"],"pattern":"solid","season":"year-round","occasion":["casual"],"notes":"Navy cargo-style pants with white stitching"},{"id":"IMG_1979","type":"dress","colors":["silver"],"pattern":"sequin","sleeves":"short","length":"mini","neckline":"scoop","season":"year-round","occasion":["going-out"],"notes":"All-over sequin party dress"},{"id":"IMG_1980","type":"sweater","colors":["cream"],"pattern":"textured","sleeves":"long","season":"winter","occasion":["casual"],"notes":"Cream cable/textured knit"},{"id":"IMG_1981","type":"top","colors":["black"],"pattern":"solid","sleeves":"sleeveless","season":"summer","occasion":["going-out"],"notes":"Black corset/bustier with button front"},{"id":"IMG_1983","type":"blouse","colors":["black"],"pattern":"lace","sleeves":"long","season":"year-round","occasion":["going-out"],"notes":"Sheer black lace blouse, flared sleeves"},{"id":"IMG_1984","type":"blouse","colors":["burgundy","brown"],"pattern":"sheer","sleeves":"long","season":"year-round","occasion":["going-out","work"],"notes":"Sheer burgundy/wine blouse"},{"id":"IMG_1985","type":"dress","colors":["grey","cream"],"pattern":"watercolor","sleeves":"sleeveless","length":"maxi","season":"summer","notes":"Watercolor print maxi dress"},{"id":"IMG_1986","type":"dress","colors":["olive","green"],"pattern":"solid","sleeves":"sleeveless","length":"maxi","season":"summer","notes":"Olive maxi dress"},{"id":"IMG_1987","type":"dress","colors":["cream","blue","yellow"],"pattern":"floral","sleeves":"sleeveless","length":"mini","season":"summer","occasion":["going-out"],"notes":"Cream floral slip dress with embellishment"},{"id":"IMG_1988","type":"dress","colors":["grey"],"pattern":"satin","sleeves":"sleeveless","length":"maxi","season":"year-round","occasion":["going-out"],"notes":"Grey satin maxi dress"},{"id":"IMG_1989","type":"jacket","colors":["tan","brown"],"pattern":"suede","sleeves":"long","season":"year-round","occasion":["casual"],"notes":"Suede western fringed jacket, cropped"},{"id":"IMG_1990","type":"blouse","colors":["multicolor"],"pattern":"floral","sleeves":"long","season":"year-round","notes":"Floral blouse with ruffled neckline"},{"id":"IMG_1991","type":"blouse","colors":["dark","red","green"],"pattern":"floral","sleeves":"long","season":"year-round","notes":"Dark floral wrap-style blouse"},{"id":"IMG_1992","type":"dress","colors":["burgundy","wine"],"pattern":"ribbed","sleeves":"short","length":"midi","neckline":"mock","season":"year-round","occasion":["casual","work"],"notes":"Ribbed t-shirt dress with belt"},{"id":"IMG_1993","type":"dress","colors":["black","multicolor"],"pattern":"floral","sleeves":"short","length":"mini","neckline":"v-neck","season":"summer","notes":"Black background floral mini dress"},{"id":"IMG_1994","type":"top","colors":["light blue"],"pattern":"denim","sleeves":"long","season":"year-round","occasion":["casual"],"notes":"Light denim peplum top/blouse"},{"id":"IMG_1995","type":"vest","colors":["denim blue"],"pattern":"denim","sleeves":"sleeveless","season":"year-round","occasion":["casual"],"notes":"Denim vest/waistcoat — front view","pairOf":"IMG_1996"},{"id":"IMG_1996","type":"vest","colors":["denim blue"],"pattern":"denim","sleeves":"sleeveless","season":"year-round","occasion":["casual"],"notes":"Denim vest — back view","pairOf":"IMG_1995","isBack":true},{"id":"IMG_1997","type":"skirt","colors":["brown","tan"],"pattern":"stripes","length":"midi","season":"year-round","occasion":["work","casual"],"notes":"Diagonal-striped skirt"},{"id":"IMG_1998","type":"shirt","colors":["grey"],"pattern":"denim","sleeves":"long","season":"year-round","occasion":["casual"],"notes":"Grey denim button-down shirt"},{"id":"IMG_1999","type":"vest","colors":["brown","taupe"],"pattern":"solid","sleeves":"sleeveless","season":"year-round","occasion":["work","casual"],"notes":"Bianca brand brown waistcoat"},{"id":"IMG_2001","type":"blouse","colors":["orange","coral"],"pattern":"paisley","sleeves":"long","season":"year-round","occasion":["going-out","casual"],"notes":"Orange paisley print blouse"},{"id":"IMG_2002","type":"shirt","colors":["navy","white"],"pattern":"gingham","sleeves":"long","season":"year-round","occasion":["casual","work"],"notes":"Navy gingham checkered button-down"},{"id":"IMG_2003","type":"shirt","colors":["white","black"],"pattern":"stripes","sleeves":"long","season":"year-round","occasion":["work"],"notes":"White with thin black pinstripe shirt"},{"id":"IMG_2004","type":"top","colors":["black"],"pattern":"ruffled","sleeves":"sleeveless","season":"summer","occasion":["going-out"],"notes":"Black ruffled blouse with embroidery"},{"id":"IMG_2005","type":"dress","colors":["navy"],"pattern":"textured","sleeves":"short","length":"midi","neckline":"collared","season":"year-round","occasion":["work"],"notes":"Navy button-down dress"},{"id":"IMG_2006","type":"blazer","colors":["dark grey"],"pattern":"pinstripe","sleeves":"long","season":"year-round","occasion":["work"],"notes":"Dark grey pinstripe double-breasted blazer"},{"id":"IMG_2007","type":"top","colors":["olive","green"],"pattern":"solid","sleeves":"long","season":"year-round","occasion":["casual"],"notes":"Olive long-sleeve top — could be tunic/short dress"},{"id":"IMG_2008","type":"blouse","colors":["black"],"pattern":"solid","sleeves":"long","neckline":"v-neck","season":"year-round","occasion":["going-out"],"notes":"Black puff-sleeve blouse with V-neck"},{"id":"IMG_2009","type":"blouse","colors":["beige","cream"],"pattern":"stripes","sleeves":"long","season":"year-round","occasion":["work"],"notes":"Striped blouse with ruffled neckline"},{"id":"IMG_2010","type":"cardigan","colors":["cream","beige"],"pattern":"fringed","sleeves":"long","season":"year-round","occasion":["casual"],"notes":"Cream cardigan with fringed hem"},{"id":"IMG_2011","type":"blazer","colors":["navy"],"pattern":"solid","sleeves":"long","season":"year-round","occasion":["work","going-out"],"notes":"Navy blazer with light buttons"},{"id":"IMG_2012","type":"shirt","colors":["white","grey"],"pattern":"stripes","sleeves":"long","season":"year-round","occasion":["work","casual"],"notes":"White shirt with thin grey pinstripes"},{"id":"IMG_2013","type":"shirt","colors":["white"],"pattern":"solid","sleeves":"long","season":"year-round","occasion":["work"],"notes":"Plain white button-down"},{"id":"IMG_2014","type":"dress","colors":["black","pink","orange"],"pattern":"floral","sleeves":"long","length":"midi","neckline":"v-neck","season":"year-round","notes":"Black floral wrap dress"},{"id":"IMG_2015","type":"dress","colors":["red","white"],"pattern":"polka dots","sleeves":"short","length":"midi","season":"summer","notes":"Red polka dot dress"},{"id":"IMG_2016","type":"cardigan","colors":["light blue","grey"],"pattern":"cable","sleeves":"long","season":"winter","occasion":["casual"],"notes":"Light blue cable-knit cardigan"},{"id":"IMG_2017","type":"shirt","colors":["white"],"pattern":"embroidered","sleeves":"long","season":"summer","occasion":["going-out"],"notes":"White button-down with embroidery detail"},{"id":"IMG_2018","type":"dress","colors":["black"],"pattern":"applique","sleeves":"sleeveless","length":"midi","season":"year-round","occasion":["going-out"],"notes":"Black party dress with rose applique on shoulder"},{"id":"IMG_2019","type":"dress","colors":["light grey","silver"],"pattern":"solid","sleeves":"short","length":"midi","neckline":"v-neck","season":"year-round","occasion":["work","going-out"],"notes":"Light grey A-line dress"},{"id":"IMG_2020","type":"dress","colors":["tan","camel"],"pattern":"solid","sleeves":"long","length":"midi","neckline":"collared","season":"year-round","occasion":["casual"],"notes":"Camel shirt-dress — front","pairOf":"IMG_2021"},{"id":"IMG_2021","type":"dress","colors":["tan","camel"],"pattern":"print","sleeves":"long","length":"midi","season":"year-round","occasion":["casual"],"notes":"Camel shirt-dress with 'QUEEN' print on back","pairOf":"IMG_2020","isBack":true},{"id":"IMG_2022","type":"vest","colors":["beige","khaki"],"pattern":"solid","sleeves":"sleeveless","season":"year-round","occasion":["casual"],"notes":"Cargo/utility vest with multiple pockets"},{"id":"IMG_2023","type":"blazer","colors":["navy","white"],"pattern":"pinstripe","sleeves":"long","season":"year-round","occasion":["work"],"notes":"Navy pinstripe blazer"},{"id":"IMG_2024","type":"dress","colors":["black","grey"],"pattern":"leopard","sleeves":"long","length":"midi","season":"year-round","occasion":["going-out"],"notes":"Leopard print ruffled dress"},{"id":"IMG_2025","type":"dress","colors":["black","pink","yellow","blue"],"pattern":"floral","sleeves":"long","length":"midi","season":"year-round","notes":"Black floral midi dress with bright multicolor flowers","pairOf":"IMG_2026"},{"id":"IMG_2026","type":"dress","colors":["black","pink","yellow","blue"],"pattern":"floral","sleeves":"long","length":"midi","season":"year-round","notes":"Likely back of black floral midi dress","pairOf":"IMG_2025","isBack":true},{"id":"IMG_2027","type":"dress","colors":["burgundy","pink"],"pattern":"floral","sleeves":"long","length":"midi","neckline":"high","season":"autumn","occasion":["going-out"],"notes":"Burgundy floral high-neck ruffled dress"},{"id":"IMG_2028","type":"dress","colors":["burgundy","pink"],"pattern":"floral","sleeves":"long","length":"midi","season":"autumn","notes":"Burgundy floral dress — front","pairOf":"IMG_2029"},{"id":"IMG_2029","type":"dress","colors":["burgundy","pink"],"pattern":"floral","sleeves":"long","length":"midi","season":"autumn","notes":"Burgundy floral dress — likely back view","pairOf":"IMG_2028","isBack":true},{"id":"IMG_2030","type":"dress","colors":["black","grey"],"pattern":"print","sleeves":"short","length":"midi","neckline":"v-neck","season":"summer","notes":"Dark printed midi dress"},{"id":"IMG_2031","type":"cardigan","colors":["brown"],"pattern":"mohair","sleeves":"long","season":"winter","occasion":["casual"],"notes":"Brown mohair cardigan"},{"id":"IMG_2032","type":"cardigan","colors":["cream","beige"],"pattern":"solid","sleeves":"long","season":"year-round","occasion":["casual"],"notes":"Cream knit cardigan"},{"id":"IMG_2033","type":"top","colors":["brown"],"pattern":"crochet","sleeves":"short","season":"summer","occasion":["casual"],"notes":"Brown crochet/mesh top"},{"id":"IMG_2034","type":"cardigan","colors":["navy","dark blue"],"pattern":"knit","sleeves":"long","season":"winter","occasion":["casual"],"notes":"Dark blue knit cardigan"},{"id":"IMG_2035","type":"dress","colors":["olive","green","pink"],"pattern":"floral","sleeves":"long","length":"midi","season":"autumn","notes":"Olive green floral dress"},{"id":"IMG_2036","type":"dress","colors":["multicolor"],"pattern":"floral","sleeves":"short","length":"mini","season":"summer","notes":"Floral mini dress with ruffled hem"},{"id":"IMG_2037","type":"skirt","colors":["blue"],"pattern":"denim","length":"mini","season":"summer","occasion":["casual"],"notes":"Medium-wash denim mini skirt"},{"id":"IMG_2038","type":"cardigan","colors":["green"],"pattern":"knit","sleeves":"short","season":"year-round","occasion":["casual"],"notes":"Short-sleeve green knit cardigan"},{"id":"IMG_2039","type":"cardigan","colors":["black"],"pattern":"knit","sleeves":"long","season":"year-round","occasion":["casual","work"],"notes":"Black knit cardigan"},{"id":"IMG_2040","type":"blouse","colors":["red","white"],"pattern":"gingham","sleeves":"short","season":"summer","occasion":["casual"],"notes":"Red gingham blouse with floral embroidery"},{"id":"IMG_2041","type":"vest","colors":["grey"],"pattern":"denim","sleeves":"sleeveless","season":"year-round","occasion":["casual"],"notes":"Grey denim vest"},{"id":"IMG_2042","type":"dress","colors":["grey","silver"],"pattern":"lace","sleeves":"long","length":"midi","season":"year-round","occasion":["going-out"],"notes":"Grey dress with lace panel detail"},{"id":"IMG_2043","type":"shorts","colors":["light blue"],"pattern":"denim","season":"summer","occasion":["casual"],"notes":"Light wash denim shorts/mini skirt"},{"id":"IMG_2044","type":"top","colors":["grey"],"pattern":"ruched","sleeves":"long","season":"year-round","occasion":["going-out"],"notes":"Grey ruched/gathered top"},{"id":"IMG_2045","type":"skirt","colors":["cream","beige"],"pattern":"solid","length":"midi","season":"summer","notes":"Cream/beige skirt"},{"id":"IMG_2046","type":"top","colors":["cream","beige"],"pattern":"linen","sleeves":"sleeveless","season":"summer","occasion":["casual"],"notes":"Linen-look sleeveless top with belt — front","pairOf":"IMG_2047"},{"id":"IMG_2047","type":"top","colors":["cream","beige"],"pattern":"linen","sleeves":"sleeveless","season":"summer","occasion":["casual"],"notes":"Same top — open back with bow tie","pairOf":"IMG_2046","isBack":true},{"id":"IMG_2048","type":"top","colors":["cream","beige"],"pattern":"linen","sleeves":"sleeveless","season":"summer","occasion":["casual"],"notes":"Cream sleeveless top — possibly same as 2046/2047 without belt, please confirm"},{"id":"IMG_2049","type":"cardigan","colors":["pink"],"pattern":"mohair","sleeves":"long","season":"year-round","occasion":["casual"],"notes":"Light pink mohair/fluffy cardigan"},{"id":"IMG_2050","type":"top","colors":["red","white"],"pattern":"stripes","sleeves":"long","season":"year-round","occasion":["casual"],"notes":"Red and white striped long-sleeve top"},{"id":"IMG_2051","type":"shirt","colors":["light blue","white"],"pattern":"stripes","sleeves":"long","season":"year-round","occasion":["casual","work"],"notes":"Light blue and white striped button-down"},{"id":"IMG_2052","type":"shirt","colors":["yellow"],"pattern":"solid","sleeves":"long","season":"summer","occasion":["casual"],"notes":"Plain yellow button-down shirt"},{"id":"IMG_2053","type":"shirt","colors":["yellow"],"pattern":"embroidered","sleeves":"long","season":"summer","occasion":["casual"],"notes":"Yellow button-down with embroidery on chest"},{"id":"IMG_2054","type":"shirt","colors":["blue","grey"],"pattern":"stripes","sleeves":"long","season":"year-round","occasion":["casual","work"],"notes":"Blue and grey vertical-stripe button-down"},{"id":"IMG_2055","type":"top","colors":["red"],"pattern":"crinkle","sleeves":"sleeveless","season":"summer","occasion":["going-out"],"notes":"Red textured crinkle top, draped"},{"id":"IMG_2056","type":"dress","colors":["red","black"],"pattern":"plaid","sleeves":"sleeveless","length":"mini","season":"year-round","notes":"Red and black plaid slip mini dress, spaghetti straps"},{"id":"IMG_2057","type":"top","colors":["black"],"pattern":"lace","sleeves":"sleeveless","season":"summer","occasion":["going-out"],"notes":"Black lace sleeveless top"},{"id":"IMG_2058","type":"jacket","colors":["dark blue","denim blue"],"pattern":"denim","sleeves":"long","neckline":"v-neck","season":"year-round","occasion":["casual"],"notes":"Dark denim button-front jacket/cardigan"},{"id":"IMG_2059","type":"dress","colors":["white","red","green"],"pattern":"floral","sleeves":"short","length":"midi","season":"summer","notes":"White dress with red poppies, green leaves and black dots"},{"id":"IMG_2060","type":"blouse","colors":["white"],"pattern":"pintuck","sleeves":"short","neckline":"v-neck","season":"summer","occasion":["casual"],"notes":"White cotton blouse with pintuck/embroidery detail"},{"id":"IMG_2061","type":"shirt","colors":["light blue"],"pattern":"solid","sleeves":"long","season":"year-round","occasion":["casual","work"],"notes":"Light blue/chambray button-down"},{"id":"IMG_2062","type":"skirt","colors":["navy","dark blue"],"pattern":"solid","length":"mini","season":"year-round","occasion":["work","casual"],"notes":"Navy A-line mini skirt"},{"id":"IMG_2063","type":"skirt","colors":["black"],"pattern":"pleated","length":"mini","season":"year-round","occasion":["work","going-out"],"notes":"Black pleated mini skirt"},{"id":"IMG_2064","type":"dress","colors":["black"],"pattern":"satin","sleeves":"sleeveless","length":"maxi","neckline":"v-neck","season":"year-round","occasion":["going-out"],"notes":"Black satin slip maxi dress, spaghetti straps"},{"id":"IMG_2065","type":"skirt","colors":["grey"],"pattern":"pinstripe","length":"mini","season":"year-round","occasion":["work"],"notes":"Grey pinstripe pleated mini skirt"},{"id":"IMG_2066","type":"skirt","colors":["black"],"pattern":"solid","length":"mini","season":"year-round","occasion":["work","casual"],"notes":"Plain black mini skirt — front","pairOf":"IMG_2067"},{"id":"IMG_2067","type":"skirt","colors":["black"],"pattern":"solid","length":"mini","season":"year-round","occasion":["work","casual"],"notes":"Plain black mini skirt — back with zipper","pairOf":"IMG_2066","isBack":true},{"id":"IMG_2068","type":"skirt","colors":["dark grey","black"],"pattern":"denim","length":"mini","season":"year-round","occasion":["casual"],"notes":"Dark wash denim mini skirt"},{"id":"IMG_2069","type":"skirt","colors":["black"],"pattern":"lace","length":"midi","season":"year-round","occasion":["going-out"],"notes":"Black lace midi skirt"},{"id":"IMG_2070","type":"dress","colors":["black"],"pattern":"solid","sleeves":"sleeveless","length":"mini","season":"summer","occasion":["going-out"],"notes":"Black sleeveless mini dress with bow at waist"},{"id":"IMG_2071","type":"skirt","colors":["black"],"pattern":"sheer","length":"maxi","season":"year-round","occasion":["going-out"],"notes":"Long black sheer/light skirt — could also be slip dress, please confirm"},{"id":"IMG_2072","type":"dress","colors":["black"],"pattern":"crinkle","sleeves":"sleeveless","length":"midi","season":"summer","occasion":["casual"],"notes":"Black crinkle button-front dress/tunic — front","pairOf":"IMG_2073"},{"id":"IMG_2073","type":"dress","colors":["black"],"pattern":"crinkle","sleeves":"sleeveless","length":"midi","season":"summer","occasion":["casual"],"notes":"Black crinkle dress/tunic — closer view (likely same item)","pairOf":"IMG_2072","isBack":true},{"id":"IMG_2074","type":"blouse","colors":["dark grey","black"],"pattern":"stripes","sleeves":"long","season":"year-round","occasion":["casual"],"notes":"Dark striped lightweight tunic/blouse"},{"id":"IMG_2075","type":"dress","colors":["black"],"pattern":"print","sleeves":"short","length":"midi","season":"summer","notes":"Black short-sleeve dress with subtle print and ruffled hem"},{"id":"IMG_2076","type":"blouse","colors":["black","cream"],"pattern":"floral","sleeves":"long","season":"year-round","occasion":["going-out"],"notes":"Black blouse with cream daisy/floral applique"},{"id":"IMG_2077","type":"top","colors":["cream","orange","red"],"pattern":"floral","sleeves":"long","season":"year-round","occasion":["casual","going-out"],"notes":"Cream floral wrap top with bow tie"},{"id":"IMG_2078","type":"sweater","colors":["green","sage"],"pattern":"solid","sleeves":"long","neckline":"crew","season":"winter","occasion":["casual"],"notes":"Sage green crewneck sweater"},{"id":"IMG_2079","type":"sweater","colors":["beige"],"pattern":"cable","sleeves":"long","neckline":"turtleneck","season":"winter","occasion":["casual"],"notes":"Beige cable-knit turtleneck"},{"id":"IMG_2080","type":"sweater","colors":["tan","camel"],"pattern":"solid","sleeves":"long","neckline":"turtleneck","season":"winter","occasion":["casual","work"],"notes":"Camel turtleneck sweater"},{"id":"IMG_2081","type":"top","colors":["beige","taupe"],"pattern":"lace","sleeves":"sleeveless","season":"year-round","occasion":["going-out"],"notes":"Lace cami/slip in beige tones"},{"id":"IMG_2082","type":"top","colors":["dark grey","charcoal"],"pattern":"solid","sleeves":"long","season":"year-round","occasion":["casual"],"notes":"Charcoal long-sleeve top"},{"id":"IMG_2083","type":"sweater","colors":["grey","pink","white"],"pattern":"argyle","sleeves":"long","neckline":"v-neck","season":"winter","occasion":["casual"],"notes":"Grey argyle V-neck sweater"},{"id":"IMG_2084","type":"trousers","colors":["black","dark grey"],"pattern":"cargo","season":"year-round","occasion":["casual"],"notes":"Black/dark grey cargo trousers"},{"id":"IMG_2085","type":"blouse","colors":["white"],"pattern":"solid","sleeves":"long","season":"summer","occasion":["casual"],"notes":"White flowy tunic blouse with drawstring"},{"id":"IMG_2086","type":"blouse","colors":["dark blue","multicolor"],"pattern":"print","sleeves":"long","season":"year-round","occasion":["casual","going-out"],"notes":"Dark blue blouse with tropical bird/leaf print"},{"id":"IMG_2087","type":"cardigan","colors":["white","cream"],"pattern":"mohair","sleeves":"long","season":"year-round","occasion":["casual"],"notes":"White fluffy/mohair cardigan, button front"}]};
+
+// ---------- HELPERS ----------
+const COLOR_PALETTE = [
+  "black","white","grey","brown","beige","cream",
+  "red","burgundy","pink","orange","yellow",
+  "green","blue","navy","multicolor"
+];
+const COLOR_CSS = {
+  "black":"#222","white":"#fafafa","grey":"#9c9690","brown":"#7d553a",
+  "beige":"#d8c4a4","cream":"#f3ead8","red":"#b83a36","burgundy":"#6e2730",
+  "pink":"#e3a3b0","orange":"#d97c4b","yellow":"#dec96b","green":"#6e8a55",
+  "blue":"#4a72a3","navy":"#1f2a44",
+  "multicolor":"linear-gradient(45deg,#e3a3b0,#dec96b,#6e8a55,#4a72a3)"
+};
+const COLOR_NORMALIZE = {
+  "olive":"green","sage":"green",
+  "dark grey":"grey","light grey":"grey","charcoal":"grey","silver":"grey","dark":"grey",
+  "champagne":"cream",
+  "tan":"beige","camel":"beige","taupe":"beige","khaki":"beige",
+  "light blue":"blue","denim blue":"blue","dark blue":"navy",
+  "wine":"burgundy",
+  "coral":"orange"
+};
+function normalizeColor(c) {
+  c = (c||"").toLowerCase().trim();
+  if (COLOR_NORMALIZE[c]) return COLOR_NORMALIZE[c];
+  if (COLOR_CSS[c]) return c;
+  return c; // unknown — keep as-is
+}
+function normalizeColorList(arr) {
+  const out = [];
+  for (const c of (arr||[])) {
+    const n = normalizeColor(c);
+    if (n && !out.includes(n)) out.push(n);
+  }
+  return out;
+}
+function colorToCSS(c) {
+  c = normalizeColor(c);
+  return COLOR_CSS[c] || "#bbb";
+}
+
+const TYPE_OPTIONS = ["dress","skirt","trousers","jeans","shorts","top","blouse","shirt","sweater","cardigan","jacket","blazer","vest","coat","jumpsuit","other"];
+const PATTERN_OPTIONS = ["","solid","floral","geometric","dots","stripes","plaid","gingham","paisley","lace","denim","sequin","knit","cable","mohair","crochet","ribbed","leopard","argyle","print","embroidered","sheer","satin","crinkle","pinstripe","watercolor","ruffled","fringed","suede","pleated","pintuck","ruched","textured","applique","cargo"];
+const SLEEVES_OPTIONS = ["","sleeveless","short","3/4","long"];
+const LENGTH_OPTIONS = ["","mini","midi","maxi","knee","ankle","full"];
+const NECKLINE_OPTIONS = ["","v-neck","scoop","mock","turtleneck","crew","collared","high","square","off-shoulder"];
+const SEASON_OPTIONS = ["spring","summer","autumn","winter","year-round"];
+const OCCASION_OPTIONS = ["casual","work","going-out","sport"];
+const SOURCE_OPTIONS = ["new","thrifted","gift","unknown"];
+const STATUS_OPTIONS = ["keep","unsure","donate","favorite"];
+
+const STORAGE_KEY = "wardrobe_overrides_v1";
+const OUTFITS_KEY = "wardrobe_outfits_v1";
+
+let overrides = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+let outfits = JSON.parse(localStorage.getItem(OUTFITS_KEY) || "[]");
+
+function getItem(id) {
+  const base = CATALOG.items.find(x => x.id === id);
+  if (!base) return null;
+  const merged = { ...base, ...(overrides[id] || {}) };
+  // Normalize colors
+  merged.colors = normalizeColorList(merged.colors);
+  // Normalize season → array
+  if (typeof merged.season === "string") merged.season = merged.season ? [merged.season] : [];
+  if (!Array.isArray(merged.season)) merged.season = [];
+  // Migrate old status "maybe" → "unsure"
+  if (merged.status === "maybe") merged.status = "unsure";
+  return merged;
+}
+function saveOverrides() { localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides)); autoSyncToFile(); }
+function saveOutfits() { localStorage.setItem(OUTFITS_KEY, JSON.stringify(outfits)); autoSyncToFile(); }
+
+// ---------- FILE SYNC (File System Access API) ----------
+let fileHandle = null;
+let fileSyncSupported = !!window.showSaveFilePicker;
+
+function idbOpen() {
+  return new Promise((resolve, reject) => {
+    const r = indexedDB.open("wardrobe_handles", 1);
+    r.onupgradeneeded = e => e.target.result.createObjectStore("handles");
+    r.onsuccess = e => resolve(e.target.result);
+    r.onerror = e => reject(e.target.error);
+  });
+}
+async function idbPut(key, value) {
+  const db = await idbOpen();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction("handles", "readwrite");
+    tx.objectStore("handles").put(value, key);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+async function idbGet(key) {
+  const db = await idbOpen();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction("handles", "readonly");
+    const req = tx.objectStore("handles").get(key);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function writeToFile(handle) {
+  const data = JSON.stringify({ exportedAt: new Date().toISOString(), overrides, outfits }, null, 2);
+  const w = await handle.createWritable();
+  await w.write(data);
+  await w.close();
+}
+
+let autoSyncTimer = null;
+function autoSyncToFile() {
+  if (!fileHandle) return;
+  // Debounce — write at most once per second
+  clearTimeout(autoSyncTimer);
+  autoSyncTimer = setTimeout(async () => {
+    try {
+      const perm = await fileHandle.queryPermission({ mode: "readwrite" });
+      if (perm !== "granted") {
+        showSyncBanner("Auto-sync paused — click Reconnect to grant access.", "reconnect");
+        return;
+      }
+      await writeToFile(fileHandle);
+      setSyncStatus("✓ synced");
+    } catch (e) {
+      console.error("Sync failed", e);
+      setSyncStatus("⚠ sync failed");
+    }
+  }, 800);
+}
+
+function setSyncStatus(text) {
+  document.getElementById("connect-file").textContent = text === "✓ synced" ? "✓ synced to file" : text || "🔗 Sync to file";
+}
+
+function showSyncBanner(text, action) {
+  const b = document.getElementById("sync-banner");
+  document.getElementById("sync-banner-text").textContent = text;
+  const btn = document.getElementById("sync-banner-action");
+  btn.style.display = action ? "inline-block" : "none";
+  btn.textContent = action === "reconnect" ? "Reconnect" : "Connect";
+  btn.onclick = action === "reconnect" ? reconnectFile : connectFile;
+  b.style.display = "block";
+}
+function hideSyncBanner() { document.getElementById("sync-banner").style.display = "none"; }
+
+async function connectFile() {
+  if (!fileSyncSupported) {
+    alert("Your browser doesn't support direct file save (works in Chrome/Edge).\nUse Export edits / Import edits instead.");
+    return;
+  }
+  try {
+    const handle = await window.showSaveFilePicker({
+      suggestedName: "wardrobe-edits.json",
+      types: [{ description: "JSON", accept: { "application/json": [".json"] }}]
+    });
+    fileHandle = handle;
+    await idbPut("edits", handle);
+    await writeToFile(handle);
+    setSyncStatus("✓ synced");
+    hideSyncBanner();
+    toast("Connected. Edits will save to file automatically.");
+  } catch (e) {
+    if (e.name !== "AbortError") console.error(e);
+  }
+}
+async function reconnectFile() {
+  if (!fileHandle) { connectFile(); return; }
+  try {
+    const re = await fileHandle.requestPermission({ mode: "readwrite" });
+    if (re === "granted") {
+      // Read existing contents and merge
+      try {
+        const file = await fileHandle.getFile();
+        const text = await file.text();
+        if (text.trim()) {
+          const data = JSON.parse(text);
+          if (data.overrides) overrides = { ...overrides, ...data.overrides };
+          if (data.outfits) outfits = data.outfits;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides));
+          localStorage.setItem(OUTFITS_KEY, JSON.stringify(outfits));
+          renderAll();
+        }
+      } catch (e) { console.warn("Couldn't read existing file:", e); }
+      await writeToFile(fileHandle);
+      setSyncStatus("✓ synced");
+      hideSyncBanner();
+      toast("Reconnected");
+    }
+  } catch (e) { console.error(e); }
+}
+
+async function initFileSync() {
+  if (!fileSyncSupported) {
+    document.getElementById("connect-file").style.display = "none";
+    return;
+  }
+  try {
+    const stored = await idbGet("edits");
+    if (!stored) return;
+    fileHandle = stored;
+    const perm = await fileHandle.queryPermission({ mode: "readwrite" });
+    if (perm === "granted") {
+      // Try to read in case the file was edited
+      try {
+        const file = await fileHandle.getFile();
+        const text = await file.text();
+        if (text.trim()) {
+          const data = JSON.parse(text);
+          if (data.overrides) overrides = data.overrides;
+          if (data.outfits) outfits = data.outfits;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides));
+          localStorage.setItem(OUTFITS_KEY, JSON.stringify(outfits));
+          renderAll();
+        }
+      } catch (e) { console.warn(e); }
+      setSyncStatus("✓ synced");
+    } else {
+      showSyncBanner("Auto-sync to file is paused.", "reconnect");
+    }
+  } catch (e) { console.warn("File sync init failed:", e); }
+}
+
+function setOverride(id, patch) {
+  overrides[id] = { ...(overrides[id]||{}), ...patch };
+  saveOverrides();
+}
+function outfitsContaining(id) { return outfits.filter(o => (o.items||[]).includes(id)); }
+
+// ---------- STATE ----------
+let activeFilters = {
+  type: new Set(), color: new Set(), season: new Set(),
+  occasion: new Set(), source: new Set(), status: new Set()
+};
+let searchText = "";
+let sortMode = localStorage.getItem("wardrobe_sort") || "id";
+let hideBacks = localStorage.getItem("wardrobe_hide_backs") === "1";
+let showHidden = localStorage.getItem("wardrobe_show_hidden") === "1";
+let outfitMode = false;
+let currentOutfit = []; // array of ids
+
+// ---------- RENDER ----------
+function allItems() { return CATALOG.items.map(x => getItem(x.id)); }
+
+function visibleItems() {
+  let items = allItems();
+  if (!showHidden) items = items.filter(x => !x.hidden);
+  if (hideBacks) items = items.filter(x => !x.isBack);
+  if (searchText) {
+    const q = searchText.toLowerCase();
+    items = items.filter(x =>
+      (x.type||"").toLowerCase().includes(q) ||
+      (x.notes||"").toLowerCase().includes(q) ||
+      (x.colors||[]).some(c => c.toLowerCase().includes(q)) ||
+      (x.pattern||"").toLowerCase().includes(q) ||
+      x.id.toLowerCase().includes(q) ||
+      (x.customTags||[]).some(t => t.toLowerCase().includes(q))
+    );
+  }
+  for (const [field, set] of Object.entries(activeFilters)) {
+    if (set.size === 0) continue;
+    items = items.filter(x => {
+      if (field === "color") return (x.colors||[]).some(c => set.has(c));
+      if (field === "occasion") return (x.occasion||[]).some(o => set.has(o));
+      if (field === "season") return (x.season||[]).some(s => set.has(s));
+      const v = x[field];
+      return set.has(v);
+    });
+  }
+  if (sortMode === "type") items.sort((a,b) => (a.type||"").localeCompare(b.type||""));
+  else if (sortMode === "color") items.sort((a,b) => ((a.colors||[])[0]||"").localeCompare((b.colors||[])[0]||""));
+  return items;
+}
+
+function renderStats() {
+  const items = allItems().filter(x => !x.isBack && x.type !== "other");
+  const byType = {};
+  items.forEach(x => { byType[x.type] = (byType[x.type]||0) + 1; });
+  document.getElementById("count-total").textContent = items.length;
+  const stats = document.getElementById("stats");
+  const sorted = Object.entries(byType).sort((a,b) => b[1]-a[1]);
+  stats.innerHTML = sorted.map(([t,n]) => `<span class="stat"><strong>${n}</strong> ${t}${n>1?'s':''}</span>`).join('');
+}
+
+function renderFilters() {
+  const items = allItems();
+  const types = [...new Set(items.map(x => x.type).filter(Boolean))].sort();
+  const colors = [...new Set(items.flatMap(x => x.colors||[]))].filter(c => COLOR_PALETTE.includes(c)).sort((a,b) => COLOR_PALETTE.indexOf(a)-COLOR_PALETTE.indexOf(b));
+
+  const groups = [
+    {name:"Type", field:"type", values: types},
+    {name:"Color", field:"color", values: colors},
+    {name:"Season", field:"season", values: SEASON_OPTIONS},
+    {name:"Occasion", field:"occasion", values: OCCASION_OPTIONS},
+    {name:"Source", field:"source", values: SOURCE_OPTIONS},
+    {name:"Status", field:"status", values: STATUS_OPTIONS},
+  ];
+
+  document.getElementById("filters").innerHTML = groups.map(g => `
+    <div class="chip-group">
+      <span class="chip-group-label">${g.name}</span>
+      ${g.values.map(v => `<span class="chip ${activeFilters[g.field].has(v) ? 'active' : ''}" data-field="${g.field}" data-val="${v}">${v}</span>`).join('')}
+    </div>
+  `).join('');
+
+  document.querySelectorAll('.chip[data-field]').forEach(el => {
+    el.addEventListener('click', () => {
+      const f = el.dataset.field, v = el.dataset.val;
+      if (activeFilters[f].has(v)) activeFilters[f].delete(v);
+      else activeFilters[f].add(v);
+      renderAll();
+    });
+  });
+}
+
+function renderGrid() {
+  const grid = document.getElementById("grid");
+  const items = visibleItems();
+  document.getElementById("empty-state").style.display = items.length ? "none" : "block";
+  grid.classList.toggle('outfit-mode', outfitMode);
+  grid.innerHTML = items.map(x => {
+    const photoUrl = `thumbs/${x.id}.jpg`;
+    const colorDots = (x.colors||[]).slice(0,4).map(c =>
+      `<span class="color-dot" style="background:${colorToCSS(c)}" title="${c}"></span>`).join('');
+    const desc = [x.pattern, (x.colors||[]).slice(0,2).join('/'), x.length].filter(Boolean).join(' · ');
+    const isSelected = currentOutfit.includes(x.id);
+    let badge = '';
+    if (x.isBack) badge = '<span class="badge back">BACK</span>';
+    else if (x.pairOf) badge = '<span class="badge">↺ paired</span>';
+    if (x.autoFlagged) badge += '<span class="badge flag">REVIEW</span>';
+    if (x.hidden) badge += '<span class="badge" style="background:#bbb;color:white;">HIDDEN</span>';
+    let statusDot = '';
+    if (x.status && x.status !== 'undecided') statusDot = `<span class="status-dot status-${x.status}" title="${x.status}"></span>`;
+    return `<div class="card ${isSelected?'selected':''}" data-id="${x.id}" style="${x.hidden?'opacity:.55':''}">
+      <div class="photo" style="background-image:url('${photoUrl}')"></div>
+      ${badge}
+      ${statusDot}
+      <div class="meta">
+        <div class="type">${x.type || 'item'}</div>
+        <div class="desc">${desc}</div>
+        <div class="colors-row">${colorDots}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.card').forEach(c => {
+    c.addEventListener('click', () => {
+      const id = c.dataset.id;
+      if (outfitMode) toggleOutfitItem(id);
+      else openModal(id);
+    });
+  });
+}
+
+// ---------- MODAL ----------
+function openModal(id) {
+  const item = getItem(id);
+  if (!item) return;
+  document.getElementById("modal-img").src = `photos/${id}.jpg`;
+  const side = document.getElementById("modal-side");
+
+  const opts = (cur, vals) => vals.map(v =>
+    `<span class="opt ${cur===v?'active':''}" data-val="${v}">${v}</span>`).join('');
+  const multiOpts = (cur, vals) => vals.map(v =>
+    `<span class="opt ${cur.includes(v)?'active':''}" data-val="${v}">${v}</span>`).join('');
+  const colorChips = (cur) => COLOR_PALETTE.map(c =>
+    `<span class="color-opt ${cur.includes(c)?'active':''}" data-val="${c}"><span class="dot" style="background:${COLOR_CSS[c]}"></span>${c}</span>`).join('');
+  const dropdown = (id, opts, cur) => `<select id="${id}">` +
+    opts.map(o => `<option value="${o}" ${o===cur?'selected':''}>${o===''?'— none —':o}</option>`).join('') +
+    `</select>`;
+
+  let pairBlock = '';
+  if (item.pairOf) {
+    const p = getItem(item.pairOf);
+    if (p) pairBlock = `<div class="pair-link" data-id="${p.id}">
+      <img src="thumbs/${p.id}.jpg" alt="">
+      <div><strong>${item.isBack ? 'Front view' : 'Back view'}</strong><br><span style="font-size:11px;color:var(--ink-soft)">click to open</span></div>
+    </div>`;
+  }
+
+  const linkedOutfits = outfitsContaining(id);
+  const linkedBlock = linkedOutfits.length ? `
+    <div class="modal-section">
+      <label>Part of outfit${linkedOutfits.length>1?'s':''}</label>
+      <div>${linkedOutfits.map((o, i) =>
+        `<span class="linked-outfit" data-outfit="${outfits.indexOf(o)}">${o.name}</span>`).join('')}</div>
+    </div>` : '';
+
+  const seasons = item.season || [];
+  const occ = item.occasion || [];
+  const typeInList = TYPE_OPTIONS.includes(item.type);
+  const typeOpts = (typeInList ? TYPE_OPTIONS : [item.type, ...TYPE_OPTIONS]).map(t =>
+    `<option value="${t}" ${t===item.type?'selected':''}>${t}</option>`).join('');
+
+  side.innerHTML = `
+    <div class="id">${item.id}${item.autoFlagged ? ' · <span style="color:var(--danger)">FLAGGED</span>' : ''}${item.hidden ? ' · <span style="color:#888">HIDDEN</span>' : ''}</div>
+    <h2 style="text-transform: capitalize">${item.type || 'item'}</h2>
+    ${pairBlock}
+
+    <div class="modal-section">
+      <label>Type</label>
+      <select id="f-type">${typeOpts}</select>
+    </div>
+
+    <div class="modal-section">
+      <label>Colors</label>
+      <div class="options-row color-row">${colorChips(item.colors||[])}</div>
+    </div>
+
+    <div class="modal-section">
+      <label>Pattern</label>
+      ${dropdown("f-pattern", PATTERN_OPTIONS, item.pattern||"")}
+    </div>
+
+    <div class="modal-section">
+      <label>Sleeves</label>
+      ${dropdown("f-sleeves", SLEEVES_OPTIONS, item.sleeves||"")}
+    </div>
+
+    <div class="modal-section">
+      <label>Length</label>
+      ${dropdown("f-length", LENGTH_OPTIONS, item.length||"")}
+    </div>
+
+    <div class="modal-section">
+      <label>Neckline</label>
+      ${dropdown("f-neckline", NECKLINE_OPTIONS, item.neckline||"")}
+    </div>
+
+    <div class="modal-section">
+      <label>Season (multi-select)</label>
+      <div class="options-row" data-multi="true" data-field="season">
+        ${multiOpts(seasons, SEASON_OPTIONS)}
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <label>Occasion (multi-select)</label>
+      <div class="options-row" data-multi="true" data-field="occasion">
+        ${multiOpts(occ, OCCASION_OPTIONS)}
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <label>Source</label>
+      <div class="options-row" data-multi="false" data-field="source">
+        ${opts(item.source||'', SOURCE_OPTIONS)}
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <label>Status</label>
+      <div class="options-row" data-multi="false" data-field="status">
+        ${opts(item.status||'', STATUS_OPTIONS)}
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <label>Personal notes</label>
+      <textarea id="f-notes" placeholder="Where you got it, fit, memories, last worn…">${item.notes||''}</textarea>
+    </div>
+
+    <div class="modal-section">
+      <label>Custom tags (comma separated)</label>
+      <input type="text" id="f-tags" value="${(item.customTags||[]).join(', ')}" placeholder="e.g. vintage, ankara, gift-from-mom">
+    </div>
+
+    ${linkedBlock}
+
+    <div class="modal-actions">
+      <button class="primary" id="save-item">Save</button>
+      <button id="hide-item">${item.hidden ? 'Unhide' : 'Hide from wardrobe'}</button>
+      <button class="ghost" id="close-modal">Close</button>
+    </div>
+  `;
+
+  // wire option buttons
+  side.querySelectorAll('.options-row').forEach(row => {
+    const multi = row.dataset.multi === "true";
+    const isColor = row.classList.contains('color-row');
+    const sel = isColor ? '.color-opt' : '.opt';
+    row.querySelectorAll(sel).forEach(o => {
+      o.addEventListener('click', () => {
+        if (isColor || multi) o.classList.toggle('active');
+        else { row.querySelectorAll('.opt').forEach(x => x.classList.remove('active')); o.classList.add('active'); }
+      });
+    });
+  });
+
+  if (pairBlock) side.querySelector('.pair-link').addEventListener('click', () => openModal(item.pairOf));
+  side.querySelectorAll('.linked-outfit').forEach(el => {
+    el.addEventListener('click', () => {
+      const oi = +el.dataset.outfit;
+      currentOutfit = [...outfits[oi].items];
+      document.getElementById("outfit-name").value = outfits[oi].name;
+      closeModal();
+      if (!outfitMode) document.getElementById("outfit-toggle").click();
+      renderOutfitPanel(); renderGrid();
+    });
+  });
+
+  document.getElementById("save-item").onclick = () => saveItem(id);
+  document.getElementById("close-modal").onclick = closeModal;
+  document.getElementById("hide-item").onclick = () => {
+    setOverride(id, { hidden: !item.hidden });
+    toast(item.hidden ? "Unhidden" : "Hidden from wardrobe");
+    closeModal();
+    renderAll();
+  };
+  document.getElementById("modal-bg").classList.add("show");
+}
+function closeModal() { document.getElementById("modal-bg").classList.remove("show"); }
+document.getElementById("modal-bg").addEventListener('click', (e) => {
+  if (e.target.id === "modal-bg") closeModal();
+});
+
+function saveItem(id) {
+  const side = document.getElementById("modal-side");
+  const patch = {};
+  patch.type = document.getElementById("f-type").value;
+  patch.pattern = document.getElementById("f-pattern").value;
+  patch.sleeves = document.getElementById("f-sleeves").value;
+  patch.length = document.getElementById("f-length").value;
+  patch.neckline = document.getElementById("f-neckline").value;
+  patch.notes = document.getElementById("f-notes").value;
+  patch.customTags = document.getElementById("f-tags").value.split(',').map(s=>s.trim()).filter(Boolean);
+  // Colors (multi)
+  patch.colors = [...side.querySelectorAll('.color-row .color-opt.active')].map(x => x.dataset.val);
+  // Other option-rows
+  side.querySelectorAll('.options-row:not(.color-row)').forEach(row => {
+    const f = row.dataset.field, multi = row.dataset.multi === "true";
+    const active = [...row.querySelectorAll('.opt.active')].map(x => x.dataset.val);
+    patch[f] = multi ? active : (active[0] || '');
+  });
+  setOverride(id, patch);
+  toast("Saved");
+  closeModal();
+  renderAll();
+}
+
+// ---------- OUTFITS ----------
+function toggleOutfitItem(id) {
+  const i = currentOutfit.indexOf(id);
+  if (i === -1) currentOutfit.push(id); else currentOutfit.splice(i, 1);
+  renderOutfitPanel();
+  renderGrid();
+}
+function renderOutfitPanel() {
+  const cur = document.getElementById("outfit-current-thumbs");
+  cur.innerHTML = currentOutfit.map(id =>
+    `<img src="thumbs/${id}.jpg" data-id="${id}" title="Click to remove">`).join('');
+  cur.querySelectorAll('img').forEach(im => im.addEventListener('click', () => toggleOutfitItem(im.dataset.id)));
+
+  const list = document.getElementById("outfits-saved-list");
+  list.innerHTML = outfits.length ? outfits.map((o, i) => `
+    <div class="outfit-saved">
+      <h4>${o.name}</h4>
+      <div class="outfit-saved-thumbs">${o.items.map(id => `<img src="thumbs/${id}.jpg">`).join('')}</div>
+      <div class="outfit-saved-actions">
+        <button data-act="load" data-i="${i}">Edit</button>
+        <button data-act="del" data-i="${i}">Delete</button>
+      </div>
+    </div>
+  `).join('') : '<p style="color:var(--ink-soft);font-size:13px;">No outfits saved yet.</p>';
+  list.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => {
+      const i = +b.dataset.i;
+      if (b.dataset.act === "del") {
+        if (confirm("Delete outfit?")) { outfits.splice(i,1); saveOutfits(); renderOutfitPanel(); }
+      } else {
+        currentOutfit = [...outfits[i].items];
+        document.getElementById("outfit-name").value = outfits[i].name;
+        renderOutfitPanel(); renderGrid();
+      }
+    });
+  });
+}
+document.getElementById("outfit-toggle").addEventListener('click', () => {
+  outfitMode = !outfitMode;
+  document.getElementById("outfit-panel").classList.toggle("open", outfitMode);
+  document.getElementById("outfit-toggle").textContent = outfitMode ? "✓ Done planning" : "👗 Outfit planner";
+  renderGrid();
+  renderOutfitPanel();
+});
+document.getElementById("outfit-close").addEventListener('click', () => {
+  outfitMode = false;
+  document.getElementById("outfit-panel").classList.remove("open");
+  document.getElementById("outfit-toggle").textContent = "👗 Outfit planner";
+  renderGrid();
+});
+document.getElementById("outfit-save").addEventListener('click', () => {
+  const name = document.getElementById("outfit-name").value.trim() || `Outfit ${outfits.length+1}`;
+  if (!currentOutfit.length) { toast("Add some items first"); return; }
+  outfits.push({ name, items: [...currentOutfit], created: new Date().toISOString() });
+  saveOutfits();
+  currentOutfit = [];
+  document.getElementById("outfit-name").value = "";
+  renderOutfitPanel(); renderGrid();
+  toast("Outfit saved");
+});
+document.getElementById("outfit-clear").addEventListener('click', () => {
+  currentOutfit = []; document.getElementById("outfit-name").value = "";
+  renderOutfitPanel(); renderGrid();
+});
+
+// ---------- TOOLBAR ----------
+document.getElementById("search").addEventListener('input', e => { searchText = e.target.value; renderGrid(); });
+document.getElementById("sort").addEventListener('change', e => { sortMode = e.target.value; localStorage.setItem("wardrobe_sort", sortMode); renderGrid(); });
+document.getElementById("sort").value = sortMode;
+document.getElementById("hide-back").addEventListener('click', () => {
+  hideBacks = !hideBacks;
+  localStorage.setItem("wardrobe_hide_backs", hideBacks ? "1" : "0");
+  document.getElementById("hide-back").textContent = hideBacks ? "Show back-of-item shots" : "Hide back-of-item shots";
+  renderGrid();
+});
+if (hideBacks) document.getElementById("hide-back").textContent = "Show back-of-item shots";
+
+document.getElementById("connect-file").addEventListener('click', () => {
+  if (fileHandle) reconnectFile(); else connectFile();
+});
+
+document.getElementById("show-hidden").addEventListener('click', () => {
+  showHidden = !showHidden;
+  localStorage.setItem("wardrobe_show_hidden", showHidden ? "1" : "0");
+  document.getElementById("show-hidden").textContent = showHidden ? "Hide hidden items" : "Show hidden items";
+  renderAll();
+});
+if (showHidden) document.getElementById("show-hidden").textContent = "Hide hidden items";
+
+document.getElementById("export").addEventListener('click', () => {
+  const data = { exportedAt: new Date().toISOString(), overrides, outfits };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `wardrobe-edits-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+});
+document.getElementById("import-btn").addEventListener('click', () => document.getElementById("import-file").click());
+document.getElementById("import-file").addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const data = JSON.parse(r.result);
+      if (data.overrides) { overrides = data.overrides; saveOverrides(); }
+      if (data.outfits) { outfits = data.outfits; saveOutfits(); }
+      renderAll(); toast("Imported");
+    } catch (err) { alert("Invalid file"); }
+  };
+  r.readAsText(f);
+});
+
+// ---------- UTIL ----------
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 1500);
+}
+function renderAll() {
+  renderStats(); renderFilters(); renderGrid(); renderOutfitPanel();
+}
+
+// ---------- STYLIST ----------
+const STYLIST_PERSONA = document.getElementById("stylist-persona").textContent.trim();
+let stylistContext = "auto";   // auto | planner | filtered | all
+let stylistSelectedPrompt = "";
+
+function buildStylistSnapshot(mode) {
+  // Returns { ids, label, count }
+  const planner = currentOutfit.slice();
+  const filtered = visibleItems().map(x => x.id);
+  const all = allItems().filter(x => !x.hidden).map(x => x.id);
+
+  let ids = [], label = "";
+  if (mode === "planner") { ids = planner; label = "the items I've added to my outfit planner right now"; }
+  else if (mode === "filtered") { ids = filtered; label = "what I've narrowed the dashboard to right now"; }
+  else if (mode === "all") { ids = all; label = "my whole active wardrobe"; }
+  else {
+    // auto: planner if any, else filtered (if differs from all), else all
+    if (planner.length) { ids = planner; label = "the items I've added to my outfit planner right now"; }
+    else if (filtered.length && filtered.length < all.length) { ids = filtered; label = "what I've narrowed the dashboard to right now"; }
+    else { ids = all; label = "my whole active wardrobe"; }
+  }
+  return { ids, label, count: ids.length };
+}
+
+function stylistContextOptions() {
+  const planner = currentOutfit.length;
+  const filtered = visibleItems().length;
+  const all = allItems().filter(x => !x.hidden).length;
+  const filteredDiffers = filtered !== all;
+  return [
+    { value: "auto",     label: "Smart pick",                desc: planner ? `Planner outfit (${planner})` : (filteredDiffers ? `Filtered view (${filtered})` : `Whole wardrobe (${all})`), count: planner || (filteredDiffers ? filtered : all), disabled: false },
+    { value: "planner",  label: "My current outfit planner", desc: planner ? "What you've added to the planner" : "Add items to the planner first", count: planner, disabled: planner === 0 },
+    { value: "filtered", label: "What's filtered right now", desc: filteredDiffers ? "Honors your search + filter chips" : "Same as whole wardrobe — no filters active", count: filtered, disabled: false },
+    { value: "all",      label: "My whole wardrobe",         desc: "Everything you haven't hidden", count: all, disabled: false },
+  ];
+}
+
+function renderStylistContextRadios() {
+  const wrap = document.getElementById("stylist-context-radios");
+  const opts = stylistContextOptions();
+  // If currently-selected mode is disabled, fall back to auto
+  if (opts.find(o => o.value === stylistContext)?.disabled) stylistContext = "auto";
+  wrap.innerHTML = opts.map(o => `
+    <label class="stylist-radio ${o.disabled ? 'disabled' : ''} ${o.value === stylistContext ? 'checked' : ''}">
+      <input type="radio" name="stylist-ctx" value="${o.value}" ${o.value === stylistContext ? 'checked' : ''} ${o.disabled ? 'disabled' : ''}>
+      <span><strong>${o.label}</strong> <span style="color:var(--ink-soft);font-weight:400;"> · ${o.desc}</span></span>
+      <span class="count">${o.count}</span>
+    </label>
+  `).join('');
+  wrap.querySelectorAll('input[name="stylist-ctx"]').forEach(input => {
+    input.addEventListener('change', () => {
+      stylistContext = input.value;
+      renderStylistContextRadios();
+      updateStylistPreview();
+    });
+  });
+}
+
+function buildStylistPrompt() {
+  const snap = buildStylistSnapshot(stylistContext);
+  const items = snap.ids.map(id => getItem(id)).filter(Boolean).map(it => {
+    // Slim each item down to the styling-relevant fields
+    const o = { id: it.id };
+    for (const k of ["type","colors","pattern","sleeves","length","neckline","season","occasion","status","notes","pairOf","isBack","customTags"]) {
+      if (it[k] !== undefined && it[k] !== "" && !(Array.isArray(it[k]) && it[k].length === 0)) o[k] = it[k];
+    }
+    return o;
+  });
+  const today = new Date().toISOString().slice(0, 10);
+  const header = [
+    "# Styling session — Claudia's wardrobe",
+    "",
+    `Date: ${today}`,
+    `Snapshot scope: ${snap.label} (${snap.count} item${snap.count===1?'':'s'})`,
+    "",
+    "---",
+    "",
+    STYLIST_PERSONA,
+    "",
+    "---",
+    "",
+    "## Wardrobe snapshot (JSON)",
+    "",
+    "```json",
+    JSON.stringify({ scope: snap.label, count: snap.count, items }, null, 2),
+    "```",
+    "",
+    "---",
+    "",
+  ].join("\n");
+  const question = (stylistSelectedPrompt || document.getElementById("stylist-custom").value || "").trim();
+  const tail = question
+    ? `## My opening message\n\n${question}\n`
+    : `## My opening message\n\n_(I'll tell you what I want to work on once you say hi.)_\n`;
+  return header + tail;
+}
+
+function updateStylistPreview() {
+  const pre = document.getElementById("stylist-preview");
+  if (pre.classList.contains("show")) {
+    pre.textContent = buildStylistPrompt();
+  }
+}
+
+function openStylist() {
+  stylistContext = "auto";
+  stylistSelectedPrompt = "";
+  document.getElementById("stylist-custom").value = "";
+  document.querySelectorAll(".stylist-prompt-btn").forEach(b => b.classList.remove("checked"));
+  document.getElementById("stylist-preview").classList.remove("show");
+  document.getElementById("stylist-preview-toggle").textContent = "Show prompt preview";
+  renderStylistContextRadios();
+  document.getElementById("stylist-bg").classList.add("show");
+}
+function closeStylist() {
+  document.getElementById("stylist-bg").classList.remove("show");
+}
+
+async function copyStylistPrompt() {
+  const text = buildStylistPrompt();
+  try {
+    await navigator.clipboard.writeText(text);
+    toast("✨ Copied — paste into a chat");
+    closeStylist();
+  } catch (e) {
+    // Fallback: show a textarea the user can manually copy from
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed"; ta.style.top = "0"; ta.style.left = "0";
+    ta.style.width = "1px"; ta.style.height = "1px"; ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); toast("✨ Copied — paste into a chat"); closeStylist(); }
+    catch (err) { alert("Couldn't copy automatically. The prompt has been logged to the browser console — open DevTools and copy it from there."); console.log(text); }
+    ta.remove();
+  }
+}
+
+document.getElementById("stylist-open").addEventListener('click', openStylist);
+document.getElementById("stylist-cancel").addEventListener('click', closeStylist);
+document.getElementById("stylist-copy").addEventListener('click', copyStylistPrompt);
+document.getElementById("stylist-bg").addEventListener('click', e => {
+  if (e.target.id === "stylist-bg") closeStylist();
+});
+document.querySelectorAll(".stylist-prompt-btn").forEach(btn => {
+  btn.addEventListener('click', () => {
+    const wasChecked = btn.classList.contains("checked");
+    document.querySelectorAll(".stylist-prompt-btn").forEach(b => b.classList.remove("checked"));
+    if (wasChecked) {
+      stylistSelectedPrompt = "";
+    } else {
+      btn.classList.add("checked");
+      stylistSelectedPrompt = btn.dataset.prompt;
+      document.getElementById("stylist-custom").value = "";
+    }
+    updateStylistPreview();
+  });
+});
+document.getElementById("stylist-custom").addEventListener('input', () => {
+  if (document.getElementById("stylist-custom").value) {
+    document.querySelectorAll(".stylist-prompt-btn").forEach(b => b.classList.remove("checked"));
+    stylistSelectedPrompt = "";
+  }
+  updateStylistPreview();
+});
+document.getElementById("stylist-preview-toggle").addEventListener('click', () => {
+  const pre = document.getElementById("stylist-preview");
+  const toggle = document.getElementById("stylist-preview-toggle");
+  if (pre.classList.contains("show")) {
+    pre.classList.remove("show");
+    toggle.textContent = "Show prompt preview";
+  } else {
+    pre.textContent = buildStylistPrompt();
+    pre.classList.add("show");
+    toggle.textContent = "Hide prompt preview";
+  }
+});
+
+// ---------- INIT ----------
+renderAll();
+initFileSync();
+document.addEventListener('keydown', e => {
+  if (e.key === "Escape") {
+    if (document.getElementById("stylist-bg").classList.contains("show")) { closeStylist(); return; }
+    closeModal();
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1103 @@
+{
+  "exportedAt": "2026-05-10T20:57:05.688Z",
+  "overrides": {
+    "IMG_2043": {
+      "type": "jeans",
+      "pattern": "denim",
+      "sleeves": "",
+      "length": "full",
+      "neckline": "",
+      "notes": "Light wash denim shorts/mini skirt",
+      "customTags": [],
+      "colors": [
+        "blue"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_1969": {
+      "type": "jeans",
+      "pattern": "textured",
+      "sleeves": "",
+      "length": "",
+      "neckline": "",
+      "notes": "Grey sparkly textured trousers — hung over hanger",
+      "customTags": [],
+      "colors": [
+        "grey"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "going-out"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_1964": {
+      "hidden": true
+    },
+    "IMG_2018": {
+      "type": "dress",
+      "pattern": "applique",
+      "sleeves": "sleeveless",
+      "length": "midi",
+      "neckline": "",
+      "notes": "Black party dress with rose applique on shoulder",
+      "customTags": [
+        "50s"
+      ],
+      "colors": [
+        "black"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "going-out"
+      ],
+      "source": "thrifted",
+      "status": ""
+    },
+    "IMG_2049": {
+      "type": "cardigan",
+      "pattern": "mohair",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Light pink mohair/fluffy cardigan",
+      "customTags": [],
+      "colors": [
+        "pink"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": ""
+    },
+    "IMG_2015": {
+      "type": "dress",
+      "pattern": "",
+      "sleeves": "short",
+      "length": "midi",
+      "neckline": "",
+      "notes": "Red polka dot dress",
+      "customTags": [
+        "30s"
+      ],
+      "colors": [
+        "white",
+        "red"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [],
+      "source": "thrifted",
+      "status": ""
+    },
+    "IMG_2006": {
+      "type": "blazer",
+      "pattern": "pinstripe",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Dark grey pinstripe double-breasted blazer",
+      "customTags": [],
+      "colors": [
+        "grey"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "work"
+      ],
+      "source": "thrifted",
+      "status": ""
+    },
+    "IMG_2011": {
+      "type": "blazer",
+      "pattern": "solid",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Navy blazer with light buttons",
+      "customTags": [],
+      "colors": [
+        "navy"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "work",
+        "going-out"
+      ],
+      "source": "thrifted",
+      "status": ""
+    },
+    "IMG_2023": {
+      "type": "blazer",
+      "pattern": "pinstripe",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Navy pinstripe blazer",
+      "customTags": [],
+      "colors": [
+        "white",
+        "navy"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "work"
+      ],
+      "source": "thrifted",
+      "status": ""
+    },
+    "IMG_2009": {
+      "type": "blouse",
+      "pattern": "stripes",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Striped blouse with ruffled neckline",
+      "customTags": [],
+      "colors": [
+        "beige",
+        "cream"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "work"
+      ],
+      "source": "new",
+      "status": ""
+    },
+    "IMG_1983": {
+      "type": "blouse",
+      "pattern": "lace",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Sheer black lace blouse, flared sleeves",
+      "customTags": [],
+      "colors": [
+        "black"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "going-out"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_2008": {
+      "type": "blouse",
+      "pattern": "solid",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "v-neck",
+      "notes": "Black puff-sleeve blouse with V-neck",
+      "customTags": [],
+      "colors": [
+        "black"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "work"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_2076": {
+      "type": "blouse",
+      "pattern": "floral",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Black blouse with cream daisy/floral applique",
+      "customTags": [],
+      "colors": [
+        "black",
+        "cream"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "going-out"
+      ],
+      "source": "thrifted",
+      "status": "unsure"
+    },
+    "IMG_1984": {
+      "type": "blouse",
+      "pattern": "sheer",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Sheer burgundy/wine blouse",
+      "customTags": [],
+      "colors": [
+        "brown",
+        "burgundy"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "work",
+        "going-out"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_1991": {
+      "type": "blouse",
+      "pattern": "floral",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Dark floral wrap-style blouse",
+      "customTags": [],
+      "colors": [
+        "grey",
+        "red",
+        "green"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "going-out"
+      ],
+      "source": "thrifted",
+      "status": "keep"
+    },
+    "IMG_2074": {
+      "type": "shirt",
+      "pattern": "stripes",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Dark striped lightweight tunic/blouse",
+      "customTags": [],
+      "colors": [
+        "grey",
+        "blue"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "thrifted",
+      "status": "unsure"
+    },
+    "IMG_1990": {
+      "type": "blouse",
+      "pattern": "floral",
+      "sleeves": "3/4",
+      "length": "",
+      "neckline": "",
+      "notes": "Floral blouse with ruffled neckline",
+      "customTags": [],
+      "colors": [
+        "multicolor"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "work",
+        "going-out"
+      ],
+      "source": "thrifted",
+      "status": "keep"
+    },
+    "IMG_2086": {
+      "type": "blouse",
+      "pattern": "print",
+      "sleeves": "short",
+      "length": "",
+      "neckline": "",
+      "notes": "Dark blue blouse with tropical bird/leaf print",
+      "customTags": [],
+      "colors": [
+        "navy",
+        "multicolor"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "going-out"
+      ],
+      "source": "thrifted",
+      "status": "unsure"
+    },
+    "IMG_2001": {
+      "type": "blouse",
+      "pattern": "paisley",
+      "sleeves": "3/4",
+      "length": "",
+      "neckline": "",
+      "notes": "Orange paisley print blouse",
+      "customTags": [],
+      "colors": [
+        "orange"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "going-out"
+      ],
+      "source": "thrifted",
+      "status": "unsure"
+    },
+    "IMG_2040": {
+      "type": "blouse",
+      "pattern": "gingham",
+      "sleeves": "short",
+      "length": "",
+      "neckline": "",
+      "notes": "Red gingham blouse with floral embroidery",
+      "customTags": [],
+      "colors": [
+        "white",
+        "red"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "thrifted",
+      "status": "favorite"
+    },
+    "IMG_2060": {
+      "type": "dress",
+      "pattern": "pintuck",
+      "sleeves": "short",
+      "length": "midi",
+      "neckline": "v-neck",
+      "notes": "White cotton dress with pintuck/embroidery detail",
+      "customTags": [],
+      "colors": [
+        "white"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_2085": {
+      "type": "blouse",
+      "pattern": "solid",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "White flowy tunic blouse with drawstring",
+      "customTags": [],
+      "colors": [
+        "white"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "thrifted",
+      "status": "unsure"
+    },
+    "IMG_1993": {
+      "type": "dress",
+      "pattern": "floral",
+      "sleeves": "short",
+      "length": "mini",
+      "neckline": "v-neck",
+      "notes": "Black background floral mini dress",
+      "customTags": [],
+      "colors": [
+        "black",
+        "multicolor"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "casual",
+        "going-out"
+      ],
+      "source": "new",
+      "status": "favorite"
+    },
+    "IMG_2025": {
+      "type": "dress",
+      "pattern": "floral",
+      "sleeves": "long",
+      "length": "midi",
+      "neckline": "",
+      "notes": "Black floral midi dress with bright multicolor flowers",
+      "customTags": [],
+      "colors": [
+        "black",
+        "pink",
+        "yellow",
+        "blue"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "work",
+        "going-out"
+      ],
+      "source": "new",
+      "status": "favorite"
+    },
+    "IMG_2070": {
+      "type": "dress",
+      "pattern": "solid",
+      "sleeves": "sleeveless",
+      "length": "mini",
+      "neckline": "",
+      "notes": "Black sleeveless mini dress with bow at waist",
+      "customTags": [],
+      "colors": [
+        "black"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "going-out"
+      ],
+      "source": "thrifted",
+      "status": "favorite"
+    },
+    "IMG_1987": {
+      "type": "dress",
+      "pattern": "floral",
+      "sleeves": "sleeveless",
+      "length": "mini",
+      "neckline": "",
+      "notes": "Cream floral slip dress with embellishment",
+      "customTags": [],
+      "colors": [
+        "cream",
+        "yellow",
+        "blue"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "going-out"
+      ],
+      "source": "thrifted",
+      "status": "keep"
+    },
+    "IMG_2035": {
+      "type": "skirt",
+      "pattern": "floral",
+      "sleeves": "long",
+      "length": "midi",
+      "neckline": "",
+      "notes": "Olive green floral dress",
+      "customTags": [],
+      "colors": [
+        "pink",
+        "green"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "occasion": [
+        "casual",
+        "going-out"
+      ],
+      "source": "thrifted",
+      "status": "favorite"
+    },
+    "IMG_2072": {
+      "type": "skirt",
+      "pattern": "crinkle",
+      "sleeves": "sleeveless",
+      "length": "midi",
+      "neckline": "",
+      "notes": "Black crinkle button-front dress/tunic — front",
+      "customTags": [],
+      "colors": [
+        "black"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "thrifted",
+      "status": "unsure"
+    },
+    "IMG_2058": {
+      "type": "top",
+      "pattern": "denim",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "v-neck",
+      "notes": "Dark denim button-front jacket/cardigan",
+      "customTags": [],
+      "colors": [
+        "blue",
+        "navy"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "",
+      "status": ""
+    },
+    "IMG_1970": {
+      "type": "jeans",
+      "pattern": "solid",
+      "sleeves": "",
+      "length": "full",
+      "neckline": "",
+      "notes": "Levi's, dark wash",
+      "customTags": [],
+      "colors": [
+        "black",
+        "grey"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_1972": {
+      "type": "jeans",
+      "pattern": "solid",
+      "sleeves": "",
+      "length": "ankle",
+      "neckline": "",
+      "notes": "Levi's, 505 classic medium wash",
+      "customTags": [],
+      "colors": [
+        "blue"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_1971": {
+      "type": "jeans",
+      "pattern": "solid",
+      "sleeves": "",
+      "length": "",
+      "neckline": "",
+      "notes": "Dark blue denim — has tag visible",
+      "customTags": [],
+      "colors": [
+        "navy"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_2066": {
+      "type": "skirt",
+      "pattern": "solid",
+      "sleeves": "",
+      "length": "mini",
+      "neckline": "",
+      "notes": "Plain black mini skirt — front",
+      "customTags": [],
+      "colors": [
+        "black"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "work"
+      ],
+      "source": "new",
+      "status": "favorite"
+    },
+    "IMG_1976": {
+      "type": "skirt",
+      "pattern": "plaid",
+      "sleeves": "",
+      "length": "midi",
+      "neckline": "",
+      "notes": "Plaid A-line skirt",
+      "customTags": [],
+      "colors": [
+        "grey",
+        "brown"
+      ],
+      "season": [
+        "autumn"
+      ],
+      "occasion": [
+        "casual",
+        "work"
+      ],
+      "source": "thrifted",
+      "status": "favorite"
+    },
+    "IMG_2045": {
+      "type": "skirt",
+      "pattern": "solid",
+      "sleeves": "",
+      "length": "midi",
+      "neckline": "",
+      "notes": "Cream/beige skirt",
+      "customTags": [],
+      "colors": [
+        "beige",
+        "cream"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_2004": {
+      "type": "top",
+      "pattern": "ruffled",
+      "sleeves": "sleeveless",
+      "length": "",
+      "neckline": "",
+      "notes": "Black ruffled blouse with embroidery",
+      "customTags": [],
+      "colors": [
+        "black"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "going-out"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_2046": {
+      "type": "trousers",
+      "pattern": "",
+      "sleeves": "sleeveless",
+      "length": "",
+      "neckline": "",
+      "notes": "Linen-look sleeveless top with belt — front",
+      "customTags": [],
+      "colors": [
+        "beige",
+        "cream"
+      ],
+      "season": [
+        "spring",
+        "summer"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "",
+      "status": ""
+    },
+    "IMG_2050": {
+      "type": "top",
+      "pattern": "stripes",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Red and white striped long-sleeve top",
+      "customTags": [],
+      "colors": [
+        "white",
+        "red"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": "favorite"
+    },
+    "IMG_2084": {
+      "type": "jeans",
+      "pattern": "cargo",
+      "sleeves": "",
+      "length": "",
+      "neckline": "",
+      "notes": "Black/dark grey cargo trousers",
+      "customTags": [],
+      "colors": [
+        "black",
+        "grey"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_2041": {
+      "type": "vest",
+      "pattern": "denim",
+      "sleeves": "sleeveless",
+      "length": "",
+      "neckline": "",
+      "notes": "Grey denim vest",
+      "customTags": [],
+      "colors": [
+        "grey"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": "favorite"
+    },
+    "IMG_1995": {
+      "type": "vest",
+      "pattern": "denim",
+      "sleeves": "sleeveless",
+      "length": "",
+      "neckline": "",
+      "notes": "Denim vest/waistcoat — front view",
+      "customTags": [],
+      "colors": [
+        "blue"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "thrifted",
+      "status": "keep"
+    },
+    "IMG_2051": {
+      "type": "shirt",
+      "pattern": "stripes",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Light blue and white striped button-down",
+      "customTags": [],
+      "colors": [
+        "white",
+        "blue"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "work"
+      ],
+      "source": "thrifted",
+      "status": "favorite"
+    },
+    "IMG_2054": {
+      "type": "shirt",
+      "pattern": "stripes",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Blue and grey vertical-stripe button-down",
+      "customTags": [],
+      "colors": [
+        "grey",
+        "blue"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "work"
+      ],
+      "source": "thrifted",
+      "status": "favorite"
+    },
+    "IMG_2061": {
+      "type": "shirt",
+      "pattern": "solid",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Light blue/chambray button-down",
+      "customTags": [],
+      "colors": [
+        "blue"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "work"
+      ],
+      "source": "thrifted",
+      "status": "favorite"
+    },
+    "IMG_1998": {
+      "type": "shirt",
+      "pattern": "denim",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Grey denim button-down shirt",
+      "customTags": [],
+      "colors": [
+        "grey"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_2002": {
+      "type": "shirt",
+      "pattern": "gingham",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Navy gingham checkered button-down",
+      "customTags": [],
+      "colors": [
+        "white",
+        "navy"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "work"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_1967": {
+      "type": "shirt",
+      "pattern": "print",
+      "sleeves": "short",
+      "length": "",
+      "neckline": "collared",
+      "notes": "White button-up with line-drawing women print",
+      "customTags": [],
+      "colors": [
+        "black",
+        "white"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "thrifted",
+      "status": "keep"
+    },
+    "IMG_2003": {
+      "type": "shirt",
+      "pattern": "stripes",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "White with thin black pinstripe shirt",
+      "customTags": [],
+      "colors": [
+        "black",
+        "white"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "work"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_2012": {
+      "type": "shirt",
+      "pattern": "stripes",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "White shirt with thin grey pinstripes",
+      "customTags": [],
+      "colors": [
+        "white",
+        "grey"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "casual",
+        "work"
+      ],
+      "source": "thrifted",
+      "status": "keep"
+    },
+    "IMG_2013": {
+      "type": "shirt",
+      "pattern": "solid",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Plain white button-down",
+      "customTags": [],
+      "colors": [
+        "white"
+      ],
+      "season": [
+        "year-round"
+      ],
+      "occasion": [
+        "work"
+      ],
+      "source": "thrifted",
+      "status": "keep"
+    },
+    "IMG_2017": {
+      "type": "shirt",
+      "pattern": "embroidered",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "White button-down with embroidery detail",
+      "customTags": [],
+      "colors": [
+        "white"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "going-out"
+      ],
+      "source": "new",
+      "status": "keep"
+    },
+    "IMG_2052": {
+      "type": "shirt",
+      "pattern": "solid",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Plain yellow button-down shirt",
+      "customTags": [],
+      "colors": [
+        "yellow"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "new",
+      "status": "favorite"
+    },
+    "IMG_2053": {
+      "type": "shirt",
+      "pattern": "embroidered",
+      "sleeves": "long",
+      "length": "",
+      "neckline": "",
+      "notes": "Yellow button-down with embroidery on chest",
+      "customTags": [],
+      "colors": [
+        "yellow"
+      ],
+      "season": [
+        "summer"
+      ],
+      "occasion": [
+        "casual"
+      ],
+      "source": "thrifted",
+      "status": "keep"
+    }
+  },
+  "outfits": []
+}
